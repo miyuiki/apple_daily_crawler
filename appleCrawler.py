@@ -45,12 +45,15 @@ class Crawler:
         res2 = self.rs.get(url, headers=header2)
 
         soup = bs(res2.text, 'html.parser')
-        tags = soup.find_all("p")
-        content = re.search('<p>(.+)（(.+)／(.+)）', str(tags[0])).group(1)
+        [s.extract() for s in soup('script')] 
+        [s.extract() for s in soup('br')] 
+        tags = soup.find_all("div", class_="ndArticle_margin")
 
-        content_soup = bs(content, features="lxml")
+        # content = re.search('<p>(.+)（(.+)／(.+)）', str(tags[0])).group(1)
+
+        # content_soup = bs(tags[0], features="lxml")
         tags2 = soup.find_all("h1")
 
-        return tags2[0].text, content_soup.text
+        return tags2[0].text, tags[0].text
 if __name__ == '__main__':
     pass
