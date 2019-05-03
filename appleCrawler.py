@@ -30,6 +30,8 @@ class Crawler:
         res = self.rs.get('https://auth.appledaily.com/web/v6/apps/598aee773b729200504d1f31/login?type=redirect&redirect_uri=https://tw.appledaily.com/new/realtime/20190429/1558639&region=TW&lang=zh_tw&gaParams=[]&pixelParams={}&utm_source=twad_web&utm_medium=internal&utm_campaign=twad_content_block&utm_content=1558639&' + info, headers=self.headers)
 
     def get_title_and_content(self, url):
+        title = ''
+        content = ''
         header2 = {
             'Host': 'tw.appledaily.com',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0',
@@ -46,14 +48,16 @@ class Crawler:
 
         soup = bs(res2.text, 'html.parser')
         [s.extract() for s in soup('script')] 
-        [s.extract() for s in soup('br')] 
-        tags = soup.find_all("div", class_="ndArticle_margin")
+        [s.extract() for s in soup('br')]
+        try:
+            tags = soup.find_all("div", class_="ndArticle_margin")
+            tags2 = soup.find_all("h1")
+            title = tags2[0].text
+            content = tags[0].text
+        except IndexError:
+            title = 'error'
+            content = 'error'
 
-        # content = re.search('<p>(.+)（(.+)／(.+)）', str(tags[0])).group(1)
-
-        # content_soup = bs(tags[0], features="lxml")
-        tags2 = soup.find_all("h1")
-
-        return tags2[0].text, tags[0].text
+        return title, content
 if __name__ == '__main__':
     pass
