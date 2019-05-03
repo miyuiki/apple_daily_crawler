@@ -4,6 +4,7 @@ import datetime
 from tqdm import tqdm
 from appleCrawler import Crawler
 import json
+import pandas as pd
 
 
 class News:
@@ -35,12 +36,16 @@ def get_content(url):
     crawler = Crawler()
     return crawler.get_title_and_content(url)[1]
 
-def writeJson(news_list):
-
+def storeNews(news_list):
+    news_0430 = pd.DataFrame(index=range(len(news_list)), columns=['date', 'title', 'content', 'url'])
     for news in news_list:
-        doc = {'date' : news.date, 'title' : news.title, 'content' : news.content, 'url' : news.url}
-        with open('0430news.txt', 'a', encoding='utf-8'):
-            json.dumps(doc, indent=4, ensure_ascii=False)
+        news_0430.loc[news_list.index(news)] = [news.date, news.title, news.content, news.url]
+    news_0430.to_csv('news_0430.csv', encoding="utf_8_sig")
+
+    # for news in news_list:
+    #     doc = {'date' : news.date, 'title' : news.title, 'content' : news.content, 'url' : news.url}
+    #     with open('0430news.txt', 'a', encoding='utf-8'):
+    #         json.dumps(doc, indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':
     date_list = getDate()
@@ -74,5 +79,5 @@ if __name__ == '__main__':
             if(news.get('title') != None):
                 news_obj = News(date, news.get('title'), news.get('href'), get_content(news.get('href')))
                 news_list.append(news_obj)
-    writeJson(news_list)
+    storeNews(news_list)
     # get_content(news_list)
