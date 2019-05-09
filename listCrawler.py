@@ -3,9 +3,8 @@ from bs4 import BeautifulSoup
 import datetime
 from tqdm import tqdm
 from appleCrawler import Crawler
-import pandas as pd
 import sys
-
+import pandas as pd
 
 
 class News:
@@ -79,4 +78,3 @@ if __name__ == '__main__':
                 news_obj = News(date, news.get('title'), news.get('href'), get_content(news.get('href')))
                 news_list.append(news_obj)
     storeNews(news_list, date)
-    # get_content(news_list)
