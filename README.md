@@ -16,3 +16,8 @@ content = crawler.get_title_and_content(url)[1]
 ```
 
 可參考`example.py`
+
+若要爬取某日的所有新聞，請執行 `listCrawler.py` 
+並額外新增一個日期參數
+`python listCrawler.py 20190430`
+請確保日期格式符合yyyymmdd
