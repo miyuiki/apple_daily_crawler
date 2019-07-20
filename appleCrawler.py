@@ -32,8 +32,9 @@ class Crawler:
     def get_title_and_content(self, url):
         title = ''
         content = ''
+        host = re.search('https:\/\/([a-z.]+)\/.+', url).group(1)
         header2 = {
-            'Host': 'tw.appledaily.com',
+            'Host': '{}'.format(host),
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'zh-TW,en-US;q=0.7,en;q=0.3',
